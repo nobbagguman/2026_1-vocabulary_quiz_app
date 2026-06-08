@@ -54,7 +54,8 @@ class VocabularyQuizApp:
 
         self.next_word()
 
-    def next_word(self) -> None:
+    #채점 안 하고 넘기면 실패 및 total 증가, 오답 직후 next는 중복 감점 방지 로직
+    def next_word(self) -> None: 
         if self.game_over:
             return
 
@@ -91,6 +92,7 @@ class VocabularyQuizApp:
         self.check_button.state(["!disabled"])
         self.answer_entry.focus()
 
+    #정답/오답 판별 후 점수 및 실패 횟수 관리, 오답 상태를 기록하여 next에서 중복 처리 방지
     def check_current(self) -> None:
         if self.current is None or self.game_over:
             return
@@ -122,6 +124,7 @@ class VocabularyQuizApp:
             self.end_game()
 
 
+    #실패 횟수 3회 도달 시 게임 종료 처리, 점수 숨기고 최종 점수와 UI 상태 업데이트
     def end_game(self):
         self.game_over = True
 
@@ -138,7 +141,8 @@ class VocabularyQuizApp:
         end_button = ttk.Button(self.word_var._root(), text="결과 보기", command=self.show_result)
         end_button.pack(pady=10)
 
-    
+
+    #남은 기회를 사용자에게 표시하여 게임 진행 상태를 직관적으로 제공
     def update_status_text(self, message=""):
         remaining = 3 - self.fail_count
 
